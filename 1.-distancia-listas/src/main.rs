@@ -6,6 +6,16 @@ fn main() {
   let mut contenido = String::new();
   archivo.read_to_string(&mut contenido).expect("No se pudo leer el archivo");
   let lista: Vec<&str> = contenido.split("\n").collect();
+  let (lista1,lista2) = separar_listas(lista.clone());
+  // Parte 1:
+  let dist: i32 = distancia(lista1.clone(), lista2.clone());
+  println!("La distancia entre las dos listas es: {}", dist);
+  // Parte 2:
+  let similitud: i32 = similaridad(lista1.clone(), lista2.clone());
+  println!("La similitud entre las dos listas es: {}", similitud);
+}
+
+fn separar_listas(lista: Vec<&str>) -> (Vec<i32>, Vec<i32>) {
   let mut lista1: Vec<i32> = Vec::new();
   let mut lista2: Vec<i32> = Vec::new();
   for i in 0..lista.len() {
@@ -15,10 +25,11 @@ fn main() {
     lista1.push(linea[0].parse().unwrap());
     lista2.push(linea[1].parse().unwrap());
   }
-  let aux_1: Vec<i32> = lista1.clone();
-  let aux_2: Vec<i32> = lista2.clone();
+  return (lista1, lista2);
+}
+
+fn distancia(mut lista1: Vec<i32>, mut lista2: Vec<i32>) -> i32 {
   let mut distancia: i32 = 0;
-  // Parte 1:
   for _i in 0..lista1.len() {
     let mut min1: i32 = lista1[0];
     let mut min2: i32 = lista2[0];
@@ -38,10 +49,10 @@ fn main() {
     lista1.remove(min_index1);
     lista2.remove(min_index2);
   }
-  println!("La distancia entre las dos listas es: {}", distancia);
-  // Parte 2:
-  lista1 = aux_1.clone();
-  lista2 = aux_2.clone();
+  return distancia;
+}
+
+fn similaridad(lista1: Vec<i32>, lista2: Vec<i32>) -> i32 {
   let mut similaridad: i32 = 0;
   for i in 0..lista1.len() {
     let mut veces_en_la_segunda = 0;
@@ -52,5 +63,5 @@ fn main() {
     }
     similaridad += veces_en_la_segunda * lista1[i];
   }
-  println!("La similaridad entre las dos listas es: {}", similaridad);
+  return similaridad;
 }
